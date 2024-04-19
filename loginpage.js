@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -31,3 +31,5 @@ function App() {
     </div>
   );
 }
+
+export default App;
