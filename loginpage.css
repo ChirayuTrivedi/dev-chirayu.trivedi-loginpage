@@ -1,15 +1,37 @@
-/* App.css */
-.loginpage {
-  text-align: center;
-}
+/* LoginPage.css */
 
-.loginpage form {
+.LoginPage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  height: 100vh;
 }
 
-.loginpage input[type="text"], .App input[type="password"] {
-  padding: 5px;
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  margin-right: 0.5rem;
+}
+
+input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
