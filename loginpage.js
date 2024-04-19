@@ -1,32 +1,33 @@
-// App.js
-import React, { useState } from "react";
-import './loginpage.css';
+import React, { useState } from 'react';
+// import axios from 'axios';
 
 function App() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    console.log(`Username: ${username}, Password: ${password}`);
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/login', { username, password });
+      if (response.data.success) {
+        setMessage(response.data.message);
+      } else {
+        setMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+    <div>
+      <h1>Login</h1>
+      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <br />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <br />
+      <button onClick={handleLogin}>Login</button>
+      <p>{message}</p>
     </div>
   );
 }
-
-export default loginpage ;
