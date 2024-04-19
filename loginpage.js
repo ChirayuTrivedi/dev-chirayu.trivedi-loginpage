@@ -1,35 +1,67 @@
-import React, { useState } from 'react';
-import axios from 'axios';
 
-function App() {
+
+import React, { useState } from 'react';
+import './LoginPage.css';
+
+function LoginPage() {
+  // State variables
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/login', { username, password });
-      if (response.data.success) {
-        setMessage(response.data.message);
-      } else {
-        setMessage(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Check username
+    if (!username || username.length < 5) {
+      setError('Username must be at least 5 characters long.');
+      return;
     }
+
+    // Check password
+    if (!password || password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
+    // Validation passes
+    setError('');
+    console.log('Username:', username);
+    console.log('Password:', password);
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <br />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <br />
-      <button onClick={handleLogin}>Login</button>
-      <p>{message}</p>
+    <div className="LoginPage">
+      <h2>Login</h2>
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
 }
 
-export default App;
+export default LoginPage;
