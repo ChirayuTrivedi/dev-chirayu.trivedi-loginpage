@@ -1,0 +1,15 @@
+/* App.css */
+.loginpage {
+  text-align: center;
+}
+
+.loginpage form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.loginpage input[type="text"], .App input[type="password"] {
+  padding: 5px;
+}
