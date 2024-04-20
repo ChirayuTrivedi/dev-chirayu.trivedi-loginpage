@@ -1,67 +1,59 @@
 
-
 import React, { useState } from 'react';
-import './LoginPage.css';
+import axios from 'axios';
+import { GoogleLogin } from 'react-google-login';
 
-function LoginPage() {
-  // State variables
+function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Check username
-    if (!username || username.length < 5) {
-      setError('Username must be at least 5 characters long.');
-      return;
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/login', { username, password });
+      if (response.data.success) {
+        setMessage(response.data.message);
+      } else {
+        setMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
+  };
 
-    // Check password
-    if (!password || password.length < 8) {
-      setError('Password must be at least 8 characters long.');
-      return;
+  const responseGoogle = async (response) => {
+    try {
+      const { tokenId } = response;
+      const googleResponse = await axios.post('http://localhost:5000/google-login', { tokenId });
+      if (googleResponse.data.success) {
+        setMessage(googleResponse.data.message);
+      } else {
+        setMessage(googleResponse.data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-
-    // Validation passes
-    setError('');
-    console.log('Username:', username);
-    console.log('Password:', password);
   };
 
   return (
-    <div className="LoginPage">
-      <h2>Login</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+    <div>
+      <h1>Login</h1>
+      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <br />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <br />
+      <button onClick={handleLogin}>Login</button>
+      <GoogleLogin
+        clientId="YOUR_GOOGLE_CLIENT_ID"
+        buttonText="Login with Google"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+      />
+      <p>{message}</p>
     </div>
   );
 }
 
-export default LoginPage;
+export default App;
+
